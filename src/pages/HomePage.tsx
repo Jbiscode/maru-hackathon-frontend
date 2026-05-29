@@ -1,32 +1,43 @@
-export function HomePage() {
-  return (
-    <div className="space-y-4">
-      <section className="rounded-2xl bg-linear-to-br from-primary to-blue-700 p-5 text-primary-foreground shadow-lg">
-        <p className="text-sm font-medium text-blue-100">해커톤 웹앱</p>
-        <h2 className="mt-1 text-2xl font-bold">앱 화면 UI 시작점</h2>
-        <p className="mt-2 text-sm leading-relaxed text-blue-50">
-          React + Vite + Tailwind CSS v4 기반으로 모바일 앱 형태의 웹 UI를
-          확장할 수 있습니다.
-        </p>
-      </section>
+import { useCallback, useRef, useState } from 'react'
+import { DrawerSheetHandle } from '@/components/home/DrawerSheetHandle'
+import { HeroCarousel } from '@/components/home/HeroCarousel'
+import { NearbyHeritageSection } from '@/components/home/NearbyHeritageSection'
+import { StoryPlacesCarouselSection } from '@/components/home/StoryPlacesCarouselSection'
+import { StoryPlacesListSection } from '@/components/home/StoryPlacesListSection'
+import {
+  heroSlides,
+  nearbyHeritageCards,
+  storyPlaces,
+} from '@/data/homeMock'
 
-      <section className="rounded-2xl border border-border bg-surface p-4">
-        <h3 className="text-sm font-semibold text-slate-800">다음 작업</h3>
-        <ul className="mt-3 space-y-2 text-sm text-muted">
-          <li className="flex items-start gap-2">
-            <span className="mt-1 size-1.5 shrink-0 rounded-full bg-primary" />
-            React Router 라우팅 (완료)
-          </li>
-          <li className="flex items-start gap-2">
-            <span className="mt-1 size-1.5 shrink-0 rounded-full bg-primary" />
-            API 연동 및 상태 관리
-          </li>
-          <li className="flex items-start gap-2">
-            <span className="mt-1 size-1.5 shrink-0 rounded-full bg-primary" />
-            화면별 기능 구현
-          </li>
-        </ul>
-      </section>
+export function HomePage() {
+  const scrollRef = useRef<HTMLDivElement>(null)
+  const [scrollY, setScrollY] = useState(0)
+
+  const onScroll = useCallback(() => {
+    setScrollY(scrollRef.current?.scrollTop ?? 0)
+  }, [])
+
+  const heroScrollRange =
+    typeof window !== 'undefined' ? window.innerHeight * 0.52 : 400
+  const coverProgress = Math.min(scrollY / heroScrollRange, 1)
+
+  return (
+    <div
+      ref={scrollRef}
+      onScroll={onScroll}
+      className="scrollbar-hide min-h-0 flex-1 overflow-y-auto overscroll-y-contain"
+    >
+      <div className="sticky top-0 z-0 h-[52dvh] shrink-0 overflow-hidden bg-black">
+        <HeroCarousel slides={heroSlides} coverProgress={coverProgress} />
+      </div>
+
+      <div className="relative z-10 -mt-10 min-h-[calc(100dvh-8rem)] rounded-t-[28px] bg-slate-100 pb-24 shadow-[0_-12px_40px_rgba(15,23,42,0.14)]">
+        <DrawerSheetHandle scrollRef={scrollRef} />
+        <NearbyHeritageSection cards={nearbyHeritageCards} />
+        <StoryPlacesListSection places={storyPlaces} />
+        <StoryPlacesCarouselSection places={storyPlaces} />
+      </div>
     </div>
   )
 }

@@ -15,7 +15,7 @@ const navItems = [
 
 export function BottomNav() {
   return (
-    <nav className="fixed bottom-0 left-1/2 z-20 w-full max-w-md -translate-x-1/2 border-t border-border bg-surface/95 px-2 pb-[max(0.5rem,env(safe-area-inset-bottom))] pt-2 backdrop-blur">
+    <nav className="fixed bottom-0 left-1/2 z-20 w-full max-w-md -translate-x-1/2 overflow-hidden rounded-t-4xl border-t border-border bg-surface/95 px-2 pb-[max(0.5rem,env(safe-area-inset-bottom))] pt-2 backdrop-blur">
       <ul className="grid grid-cols-4 gap-1">
         {navItems.map((item) => (
           <li key={item.to}>

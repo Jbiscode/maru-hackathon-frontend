@@ -2,20 +2,20 @@ import { Outlet, useMatches } from 'react-router-dom'
 import { AppShell } from '@/components/layout/AppShell'
 import type { RouteHandle } from '@/types/router'
 
-function getPageTitle(matches: ReturnType<typeof useMatches>) {
-  const matchWithTitle = [...matches]
+function getRouteHandle(matches: ReturnType<typeof useMatches>) {
+  const matchWithHandle = [...matches]
     .reverse()
     .find((match) => (match.handle as RouteHandle | undefined)?.title)
 
-  return (matchWithTitle?.handle as RouteHandle | undefined)?.title ?? '앱'
+  return matchWithHandle?.handle as RouteHandle | undefined
 }
 
 export function RootLayout() {
   const matches = useMatches()
-  const title = getPageTitle(matches)
+  const handle = getRouteHandle(matches)
 
   return (
-    <AppShell title={title}>
+    <AppShell title={handle?.title ?? '앱'} immersive={handle?.immersive}>
       <Outlet />
     </AppShell>
   )

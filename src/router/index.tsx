@@ -16,7 +16,7 @@ export const router = createBrowserRouter([
       {
         index: true,
         Component: HomePage,
-        handle: { title: '홈' } satisfies RouteHandle,
+        handle: { title: '홈', immersive: true } satisfies RouteHandle,
       },
       {
         path: 'tour',
